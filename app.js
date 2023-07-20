@@ -23,7 +23,8 @@ app.post('/api/storeEmail', async (req, res) => {
       const { data, error } = await supabase.from('emails').insert([{ email: email }]);
   
       if (error) {
-        pino.error('Error saving email address:', error);
+        console.log(error)
+        pino.error(error);
         return res.status(500).json({ error: 'Failed to save email address' });
       }
       pino.info('Data inserted successfully:', data);
