@@ -18,23 +18,21 @@ const pino = require('pino')({ destination: process.stdout });
 
 app.post('/api/storeEmail', async (req, res) => {
     const { email } = req.body;
-    pino.info(req);
-    pino.info(res);
-    pino.info(req.body)
+    pino.info(email)
   
-//     try {
-//       const { data, error } = await supabase.from('emails').insert([{ email }]);
+    try {
+      const { data, error } = await supabase.from('emails').insert([{ email }]);
   
-//       if (error) {
-//    //     pino.error('Error saving email address:', error);
-//         return res.status(500).json({ error: 'Failed to save email address' });
-//       }
-//       pino.info('Data inserted successfully:', data);
-//       res.status(201).json({ message: 'Email address saved successfully' });
-//     } catch (error) {
-//       pino.error('Error:', error);
-//       res.status(500).json({ error: 'Failed to save email address' });
-//     }
+      if (error) {
+        pino.error('Error saving email address:', error);
+        return res.status(500).json({ error: 'Failed to save email address' });
+      }
+      pino.info('Data inserted successfully:', data);
+      res.status(201).json({ message: 'Email address saved successfully' });
+    } catch (error) {
+      pino.error('Error:', error);
+      res.status(500).json({ error: 'Failed to save email address' });
+    }
   });
 
 
