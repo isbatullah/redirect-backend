@@ -10,12 +10,6 @@ const supabaseKey = process.env.SUPABASE_API_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 const pino = require('pino')({ destination: process.stdout });
 
-
-
-
-
-
-
 app.post('/api/storeEmail', async (req, res) => {
     const { email } = req.body;
   
@@ -23,7 +17,6 @@ app.post('/api/storeEmail', async (req, res) => {
       const { data, error } = await supabase.from('emails').insert([{ email: email }]);
   
       if (error) {
-        console.log(error)
         pino.error(error);
         return res.status(500).json({ error: 'Failed to save email address' });
       }
