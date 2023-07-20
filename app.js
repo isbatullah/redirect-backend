@@ -16,7 +16,7 @@ app.use(express.json());
 
 // API endpoint to store email addresses in Supabase database
 app.post('/api/storeEmail', async (req, res) => {
-    res.status(205).json({message: 'testing'})
+    res.status(500).json({message: 'testing'})
 
 
 
