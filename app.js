@@ -28,7 +28,7 @@ app.post('/api/storeEmail', async (req, res) => {
       return res.status(500).json({ error: 'Failed to save email address' });
     }
     pino.info('Data inserted successfully:', data);
-    res.status(201).json({ message: 'Email address saved successfully' });
+    return res.status(201).json({ message: 'Email address saved successfully' });
   } catch (error) {
     pino.error('Error:', error);
     res.status(500).json({ error: 'Failed to save email address' });
