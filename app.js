@@ -15,29 +15,34 @@ const pino = require('pino')({
 app.use(express.json());
 
 // API endpoint to store email addresses in Supabase database
-app.post('/api/storeEmail', async (req, res) => {
-    res.status(500).json({message: 'testing'})
 
-
-
-    //   const { email } = req.body;
-//   pino.info('Received email:', email);
-
-
-//   try {
-//     const { data, error } = await supabase.from('emails').insert([{ email }]);
-
-//     if (error) {
-//       pino.error('Error saving email address:', error);
-//       return res.status(500).json({ error: 'Failed to save email address' });
-//     }
-//     pino.info('Data inserted successfully:', data);
-//     return res.status(201).json({ message: 'Email address saved successfully' });
-//   } catch (error) {
-//     pino.error('Error:', error);
-//     res.status(500).json({ error: 'Failed to save email address' });
-//   }
-});
 
 const port = 3000;
 app.listen(port, () => console.log(`Server running on port ${port}`));
+
+
+app.post('/api/storeEmail', async (req, res) => {
+    const { email } = req.body;
+    res.status(201).json({
+        status: 201,
+        message: email
+    })
+
+
+    // const { email } = req.body;
+    // pino.info('Received email:', email);
+  
+    // try {
+    //   const { data, error } = await supabase.from('emails').insert([{ email }]);
+  
+    //   if (error) {
+    //     pino.error('Error saving email address:', error);
+    //     return res.status(500).json({ error: 'Failed to save email address' });
+    //   }
+    //   pino.info('Data inserted successfully:', data);
+    //   res.status(201).json({ message: 'Email address saved successfully' });
+    // } catch (error) {
+    //   pino.error('Error:', error);
+    //   res.status(500).json({ error: 'Failed to save email address' });
+    // }
+  });
