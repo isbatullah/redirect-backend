@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 app.use(express.json());
+app.use(cors());
 const { createClient } = require('@supabase/supabase-js');
 const port = 3000;
 const supabaseUrl = process.env.SUPABASE_URL;
