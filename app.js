@@ -15,7 +15,8 @@ app.use(express.json());
 // API endpoint to store email addresses in Supabase database
 app.post('/api/storeEmail', async (req, res) => {
   const { email } = req.body;
-  console.log('Received email:', email);
+  pino.info('Received email:', email);
+
 
   try {
     const { data, error } = await supabase.from('emails').insert([{ email }]);
