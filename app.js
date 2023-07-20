@@ -23,26 +23,19 @@ app.listen(port, () => console.log(`Server running on port ${port}`));
 
 app.post('/api/storeEmail', async (req, res) => {
     const { email } = req.body;
-    res.status(201).json({
-        status: 201,
-        message: email
-    })
-
-
-    // const { email } = req.body;
-    // pino.info('Received email:', email);
+    pino.info('Received email:', email);
   
-    // try {
-    //   const { data, error } = await supabase.from('emails').insert([{ email }]);
+    try {
+      const { data, error } = await supabase.from('emails').insert([{ email }]);
   
-    //   if (error) {
-    //     pino.error('Error saving email address:', error);
-    //     return res.status(500).json({ error: 'Failed to save email address' });
-    //   }
-    //   pino.info('Data inserted successfully:', data);
-    //   res.status(201).json({ message: 'Email address saved successfully' });
-    // } catch (error) {
-    //   pino.error('Error:', error);
-    //   res.status(500).json({ error: 'Failed to save email address' });
-    // }
+      if (error) {
+        pino.error('Error saving email address:', error);
+        return res.status(500).json({ error: 'Failed to save email address' });
+      }
+      pino.info('Data inserted successfully:', data);
+      res.status(201).json({ message: 'Email address saved successfully' });
+    } catch (error) {
+      pino.error('Error:', error);
+      res.status(500).json({ error: 'Failed to save email address' });
+    }
   });
