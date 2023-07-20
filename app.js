@@ -23,13 +23,14 @@ app.listen(port, () => console.log(`Server running on port ${port}`));
 
 app.post('/api/storeEmail', async (req, res) => {
     const { email } = req.body;
-    pino.info('Received email:', req.body);
+    pino.info('request', req);
+    pino.info('response', res);
   
     try {
       const { data, error } = await supabase.from('emails').insert([{ email }]);
   
       if (error) {
-        pino.error('Error saving email address:', error);
+   //     pino.error('Error saving email address:', error);
         return res.status(500).json({ error: 'Failed to save email address' });
       }
       pino.info('Data inserted successfully:', data);
