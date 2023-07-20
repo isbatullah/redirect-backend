@@ -23,7 +23,7 @@ app.listen(port, () => console.log(`Server running on port ${port}`));
 
 app.post('/api/storeEmail', async (req, res) => {
     const { email } = req.body;
-    pino.info('Received email:', email);
+    pino.info('Received email:', req.body);
   
     try {
       const { data, error } = await supabase.from('emails').insert([{ email }]);
