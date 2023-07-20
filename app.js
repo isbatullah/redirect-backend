@@ -18,10 +18,9 @@ const pino = require('pino')({ destination: process.stdout });
 
 app.post('/api/storeEmail', async (req, res) => {
     const { email } = req.body;
-    pino.info(email)
   
     try {
-      const { data, error } = await supabase.from('emails').insert([{ email }]);
+      const { data, error } = await supabase.from('emails').insert([{ email: email }]);
   
       if (error) {
         pino.error('Error saving email address:', error);
