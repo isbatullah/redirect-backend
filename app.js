@@ -7,6 +7,7 @@ const app = express();
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_API_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
+const pino = require('pino')();
 
 // Parse JSON body
 app.use(express.json());
@@ -20,13 +21,13 @@ app.post('/api/storeEmail', async (req, res) => {
     const { data, error } = await supabase.from('emails').insert([{ email }]);
 
     if (error) {
-      console.error('Error saving email address:', error);
+      pino.error('Error saving email address:', error);
       return res.status(500).json({ error: 'Failed to save email address' });
     }
-    console.log('Data inserted successfully:', data); // Print the response data to the server console
+    pino.info('Data inserted successfully:', data);
     res.status(201).json({ message: 'Email address saved successfully' });
   } catch (error) {
-    console.error('Error:', error);
+    pino.error('Error:', error);
     res.status(500).json({ error: 'Failed to save email address' });
   }
 });
