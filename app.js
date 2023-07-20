@@ -7,7 +7,9 @@ const app = express();
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_API_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
-const pino = require('pino')();
+const pino = require('pino')({
+    destination: process.stdout
+  });
 
 // Parse JSON body
 app.use(express.json());
