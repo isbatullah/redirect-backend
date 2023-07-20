@@ -14,6 +14,7 @@ app.use(express.json());
 // API endpoint to store email addresses in Supabase database
 app.post('/api/storeEmail', async (req, res) => {
   const { email } = req.body;
+  console.log('Received email:', email);
 
   try {
     const { data, error } = await supabase.from('emails').insert([{ email }]);
@@ -22,7 +23,7 @@ app.post('/api/storeEmail', async (req, res) => {
       console.error('Error saving email address:', error);
       return res.status(500).json({ error: 'Failed to save email address' });
     }
-
+    console.log('Data inserted successfully:', data); // Print the response data to the server console
     res.status(201).json({ message: 'Email address saved successfully' });
   } catch (error) {
     console.error('Error:', error);
