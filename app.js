@@ -37,7 +37,7 @@ app.post('/api/storeEmail', async (req, res) => {
     const { subdirectory, redirectLink } = req.body;
   
     // Check if the specified subdirectory already exists
-    const redirectorPath = path.join(__dirname, 'public', subdirectory);
+    const redirectorPath = path.join(subdirectory);
     if (fs.existsSync(redirectorPath)) {
       return res.status(400).json({ error: `Redirector for /${subdirectory} already exists.` });
     }
