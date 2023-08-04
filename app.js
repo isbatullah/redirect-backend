@@ -105,6 +105,8 @@ app.post('/api/storeEmail', async (req, res) => {
     // Write the HTML content to a new file under the specified subdirectory
     fs.writeFile(`${redirectorPath}/index.html`, htmlContent, (err) => {
       if (err) {
+        pino.error(`${redirectorPath}`)
+        pino.error(err)
         return res.status(500).json({ error: 'Failed to create redirector.' });
       }
   
