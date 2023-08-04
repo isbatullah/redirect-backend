@@ -30,5 +30,87 @@ app.post('/api/storeEmail', async (req, res) => {
     }
   });
 
+  const fs = require('fs');
+  const path = require('path');
+
+  app.post('/api/createRedirector', (req, res) => {
+    const { subdirectory, redirectLink } = req.body;
+  
+    // Check if the specified subdirectory already exists
+    const redirectorPath = path.join(__dirname, 'public', subdirectory);
+    if (fs.existsSync(redirectorPath)) {
+      return res.status(400).json({ error: `Redirector for /${subdirectory} already exists.` });
+    }
+  
+    // Create the HTML content for the redirector
+    const htmlContent = `
+    <!-- index.html -->
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Email Collection Form</title>
+      <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+      <div class="center">
+        <div class="form-container">
+          <h2 class="header">Enter your email address to continue to site:</h2>
+          <form id="emailForm">
+            <input type="email" id="email" name="email" required>
+            <button type="submit">Submit</button>
+          </form>
+          <script>
+            // script.js
+            document.getElementById('emailForm').addEventListener('submit', async function(event) {
+                event.preventDefault();
+              
+                const email = event.target.elements.email.value;
+                const data = { email };
+                console.log(email)
+                console.log(data)
+              
+                try {
+                  const response = await fetch('https://redirect-backend.onrender.com/api/storeEmail', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                  });
+              
+                  if (response.ok) {
+                    // Read the redirect URL from local storage
+                    const redirectURL = localStorage.getItem('redirectURL');
+                    if (redirectURL) {
+                      window.location.href = '${redirectLink}';
+                    } else {
+                      // If no redirect URL is set, use a default URL
+                      window.location.href = 'https://aianswer.us'; // Replace with your desired link
+                    }
+                  } else {
+                    alert('Failed to save email address. Please try again later.');
+                  }
+                } catch (error) {
+                  console.error('Error:', error);
+                  alert('Failed to save email address. Please try again later.');
+                }
+              });
+          </script>
+        </div>
+      </div>
+    </body>
+    </html>
+    `;
+  
+    // Write the HTML content to a new file under the specified subdirectory
+    fs.writeFile(`${redirectorPath}/index.html`, htmlContent, (err) => {
+      if (err) {
+        return res.status(500).json({ error: 'Failed to create redirector.' });
+      }
+  
+      res.status(200).json({ message: `Redirector for /${subdirectory} created successfully`, redirectLink });
+    });
+  });
+
 
 app.listen(port, () => console.log(`Server running on port ${port}`));
