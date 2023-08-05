@@ -108,7 +108,8 @@ app.post('/api/storeEmail', async (req, res) => {
     // Write the HTML content to a new file under the specified subdirectory
       // Create the 'public' directory if it doesn't exist
     fs.mkdirSync(path.join(__dirname, 'public'), { recursive: true });
-    fs.writeFile(`${subdirectory}`, htmlContent, (err) => {
+    fs.mkdirSync(redirectorPath, { recursive: true });
+    fs.writeFile(path.join(redirectorPath, 'index.html'), htmlContent, (err) => {
       if (err) {
         pino.error(`${redirectorPath}`)
         pino.error(err)
