@@ -35,9 +35,12 @@ app.post('/api/storeEmail', async (req, res) => {
 
   app.post('/api/createRedirector', (req, res) => {
     const { subdirectory, redirectLink } = req.body;
+    pino.log(subdirectory)
+    pino.log(redirectLink)
   
     // Check if the specified subdirectory already exists
-    const redirectorPath = path.join(subdirectory);
+    const redirectorPath = path.join(__dirname, 'public', 'directory');
+    pino.log(redirectorPath)
     if (fs.existsSync(redirectorPath)) {
       return res.status(400).json({ error: `Redirector for /${subdirectory} already exists.` });
     }
@@ -103,6 +106,8 @@ app.post('/api/storeEmail', async (req, res) => {
     `;
   
     // Write the HTML content to a new file under the specified subdirectory
+      // Create the 'public' directory if it doesn't exist
+    fs.mkdirSync(path.join(__dirname, 'public'), { recursive: true });
     fs.writeFile(`${subdirectory}`, htmlContent, (err) => {
       if (err) {
         pino.error(`${redirectorPath}`)
