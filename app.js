@@ -39,7 +39,7 @@ app.post('/api/storeEmail', async (req, res) => {
     pino.info(redirectLink)
   
     // Check if the specified subdirectory already exists
-    const redirectorPath = path.join(__dirname, 'public', 'directory');
+    const redirectorPath = path.join(__dirname, 'public', subdirectory);
     pino.info(redirectorPath)
     if (fs.existsSync(redirectorPath)) {
       return res.status(400).json({ error: `Redirector for /${subdirectory} already exists.` });
